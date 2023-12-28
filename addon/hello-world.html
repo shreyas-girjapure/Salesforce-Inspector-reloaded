@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="module" defer src="hello-world.js"></script>
+
+    <style>
+        /* Styling for the container */
+        .container-custom {
+            margin-top: 50px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        /* Styling for the dark mode button */
+        .dark-mode-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-custom">
+        <h2>Flow Analyzer</h2>
+        <div class="mb-3">
+            <!-- Dropdown list -->
+            <label for="flowSelect" class="form-label">Flow Name</label>
+            <select class="form-select" id="flowSelect">
+                <option value="flow1">Flow 1</option>
+                <option value="flow2">Flow 2</option>
+                <option value="flow3">Flow 3</option>
+            </select>
+        </div>
+        <button type="button" id="analyze" class="btn btn-primary">Analyze</button>
+    </div>
+    <!-- <button type="button" class="btn btn-secondary dark-mode-btn" id="darkModeToggle">Dark</button> -->
+</body>
+
+</html>
