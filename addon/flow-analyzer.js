@@ -18,10 +18,14 @@ const flowMetadataDetailsQuery = "select id, FullName , Metadata from Flow where
 
 let currentSelectedFlow = '';
 
+console.log(window.location.href);
 //Session managers
 let args = new URLSearchParams(location.search.slice(1));
-let sfHost = args.get("host");
-
+let argsMainURL = args.get("host");
+let [sfHost, flowString] = argsMainURL.split("?");
+console.log('the sf', sfHost);
+let [key, flowId] = flowString.split("=");
+console.log(flowId)
 
 // domNodes
 let analyzeButton = document.getElementById("analyze");
@@ -43,6 +47,7 @@ analyzeButton.addEventListener('click', async () => {
     }
 
     toggleSpinner(spinner, true);
+
     try {
         let flowMetadataDetails = await getSelectedFlowMetadataDetails(currentSelectedFlow);
 
@@ -180,5 +185,5 @@ function resetValuesOnSelect() {
 }
 
 function toggleSpinner(spinner, show) {
-    spinner.style.display = show ? 'inline-block' : 'none'; // Show/hide spinner
+    spinner.style.display = show ? 'inline-block' : 'none';
 }
