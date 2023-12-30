@@ -25,7 +25,7 @@ let argsMainURL = args.get("host");
 let [sfHost, flowString] = argsMainURL.split("?");
 console.log('the sf', sfHost);
 let [key, flowId] = flowString.split("=");
-console.log(flowId)
+currentSelectedFlow = flowId || '';
 
 // domNodes
 let analyzeButton = document.getElementById("analyze");
@@ -70,7 +70,7 @@ analyzeButton.addEventListener('click', async () => {
 flowSelect.addEventListener('change', (e) => {
     currentSelectedFlow = e.target.value;
     resetValuesOnSelect();
-    console.log(currentSelectedFlow);
+    console.log(currentSelectedFlow);    
 });
 
 darkModeButton?.addEventListener('click', () => {
@@ -114,7 +114,10 @@ function addFlowOptionItems(listOfFlowDefinitionData) {
     records.forEach((record, index) => {
         const option = document.createElement('option');
         option.value = record.ActiveVersionId;
-        option.text = record.DeveloperName; // Assuming DeveloperName is the desired field for the option text
+        option.text = record.DeveloperName;
+        if(option.value === currentSelectedFlow){
+            option.selected = true;
+        } // Assuming DeveloperName is the desired field for the option text
         selectElement.appendChild(option);
     });
 }
