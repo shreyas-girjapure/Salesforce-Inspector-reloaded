@@ -64,7 +64,8 @@
         "inspect.html",
         "metadata-retrieve.html",
         "explore-api.html",
-        "limits.html"
+        "limits.html",
+        "flow-analyzer.html"
       ],
       "matches": [
         "https://*/*"

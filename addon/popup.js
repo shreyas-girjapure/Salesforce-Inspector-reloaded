@@ -175,6 +175,7 @@ class App extends React.PureComponent {
     let {isInSetup, contextUrl, apiVersionInput, isFieldsPresent} = this.state;
     let clientId = localStorage.getItem(sfHost + "_clientId");
     let hostArg = new URLSearchParams();
+    let isFlowPage = contextUrl?.includes("builder_platform_interaction");
     hostArg.set("host", sfHost);
     let linkInNewTab = localStorage.getItem("openLinksInNewTab");
     let linkTarget = inDevConsole || linkInNewTab ? "_blank" : "_top";
@@ -214,7 +215,7 @@ class App extends React.PureComponent {
           h("div", {className: "slds-p-vertical_x-small slds-p-horizontal_x-small"},
             // Advanded features should be put below this line, and the layout adjusted so they are below the fold
             h("div", {className: "slds-m-bottom_xx-small"},
-              h("a", {ref: "helloWorldBtn", href: "hello-world.html?" + hostArg, target: linkTarget, className: "page-button slds-button slds-button_neutral"}, h("span", {}, h("u", {}, "F"), "low Analyzer"))
+              h("a", {ref: "flowAnalyzerButton", href: "flow-analyzer.html?" + hostArg, target: "_blank", className: !isFlowPage ? "button hide" : "page-button slds-button slds-button_neutral"}, h("span", {}, h("u", {}, "F"), "low Analyzer"))
             ),
             h("div", {className: "slds-m-bottom_xx-small"},
               h("a", {ref: "metaRetrieveBtn", href: "metadata-retrieve.html?" + hostArg, target: linkTarget, className: "page-button slds-button slds-button_neutral"}, h("span", {}, h("u", {}, "D"), "ownload Metadata"))
