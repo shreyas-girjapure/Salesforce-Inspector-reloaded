@@ -27,6 +27,7 @@ let sfHost = args.get("host");
 let analyzeButton = document.getElementById("analyze");
 const darkModeButton = document.getElementById('darkModeToggle');
 const flowSelect = document.getElementById('flowSelect');
+const resultContainer = document.getElementById('result-container');
 
 // Listeners 
 
@@ -133,9 +134,8 @@ async function sendFlowMetadataForAnalysis(flowMetadata) {
 }
 
 function displayFlowAnalyzedData(flowAnalysisResult) {
-    const container = document.querySelector('.container-custom');
-    const dataDiv = document.createElement('div');
-    dataDiv.classList.add('mt-3');
+
+    resultContainer.classList.add('mt-3');
 
     const heading = document.createElement('h3');
     heading.textContent = 'Elements Without Incoming Edge:';
@@ -159,15 +159,10 @@ function displayFlowAnalyzedData(flowAnalysisResult) {
         }
     });
 
-    dataDiv.appendChild(heading);
-    dataDiv.appendChild(ul);
-
-    container.appendChild(dataDiv);
+    resultContainer.appendChild(heading);
+    resultContainer.appendChild(ul);
 }
 
 function resetValuesOnSelect() {
-    let resultDiv = document.querySelector('div.mt-3')
-    if (resultDiv) {
-        resultDiv.remove();
-    }
+    resultContainer.innerHTML = '';
 }
