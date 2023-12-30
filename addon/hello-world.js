@@ -28,7 +28,7 @@ let analyzeButton = document.getElementById("analyze");
 const darkModeButton = document.getElementById('darkModeToggle');
 const flowSelect = document.getElementById('flowSelect');
 const resultContainer = document.getElementById('result-container');
-
+const spinner = document.querySelector('#analyze .spinner-border');
 // Listeners 
 
 // DOM Connected callback
@@ -37,16 +37,29 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 analyzeButton.addEventListener('click', async () => {
-    let flowMetadataDetails = await getSelectedFlowMetadataDetails(currentSelectedFlow);
-
-    let flowMetadata = flowMetadataDetails?.records[0]?.Metadata;
-    if (flowMetadata) {
-        let analysisResult = await sendFlowMetadataForAnalysis(flowMetadata);
-        if (analysisResult) {
-            displayFlowAnalyzedData(analysisResult);
-        }
-        console.log(analysisResult);
+    if (!currentSelectedFlow) {
+        alert('Please Select Flow For Analysis')
+        return;
     }
+
+    toggleSpinner(spinner, true);
+    try {
+        let flowMetadataDetails = await getSelectedFlowMetadataDetails(currentSelectedFlow);
+
+        let flowMetadata = flowMetadataDetails?.records[0]?.Metadata;
+        if (flowMetadata) {
+            let analysisResult = await sendFlowMetadataForAnalysis(flowMetadata);
+            if (analysisResult) {
+                displayFlowAnalyzedData(analysisResult);
+            }
+            console.log(analysisResult);
+        }
+    } catch (error) {
+        console.error('Error occurred during analysis:', error);
+    } finally {
+        toggleSpinner(spinner, false);
+    }
+
 });
 
 flowSelect.addEventListener('change', (e) => {
@@ -137,13 +150,12 @@ function displayFlowAnalyzedData(flowAnalysisResult) {
 
     resultContainer.classList.add('mt-3');
 
-    const heading = document.createElement('h3');
+    const heading = document.createElement('h4');
     heading.textContent = 'Elements Without Incoming Edge:';
 
     const ul = document.createElement('ul');
 
     if (flowAnalysisResult?.result?.length === 0) {
-        console.log("adasdsa")
         const li = document.createElement('li');
         li.textContent = "All Flow Elements Are Properly Mapped 🥳";
         ul.appendChild(li);
@@ -165,4 +177,8 @@ function displayFlowAnalyzedData(flowAnalysisResult) {
 
 function resetValuesOnSelect() {
     resultContainer.innerHTML = '';
+}
+
+function toggleSpinner(spinner, show) {
+    spinner.style.display = show ? 'inline-block' : 'none'; // Show/hide spinner
 }
