@@ -11,6 +11,11 @@ import { sfConn, apiVersion } from "./inspector.js";
 
 // Initializers and Constants
 let isDarkMode = false;
+const flowAnalyzerApiPath = "https://flow-incoming-edge-analyzer.onrender.com/analyze";
+const flowDefinitionQuery = "select id, DeveloperName  , ActiveVersionId from FlowDefinition order by LastModifiedDate desc";
+const flowMetadataDetailsQuery = "select id, FullName , Metadata from Flow where id = ";
+
+let currentSelectedFlow = '';
 
 //Session managers
 let args = new URLSearchParams(location.search.slice(1));
@@ -23,13 +28,25 @@ const darkModeButton = document.getElementById('darkModeToggle');
 const flowSelect = document.getElementById('flowSelect');
 
 // Listeners 
-analyzeButton.addEventListener('click', () => {
+
+// DOM Connected callback
+document.addEventListener('DOMContentLoaded', () => {
     initiateLoad();
+})
+
+analyzeButton.addEventListener('click', async () => {
+    let flowMetadataDetails = await getSelectedFlowMetadataDetails(currentSelectedFlow);
+
+    let flowMetadata = flowMetadataDetails?.records[0]?.Metadata;
+    if (flowMetadata) {
+        let analysisResult = await analyzeFlowMetadata(flowMetadata);
+        console.log(analysisResult);
+    }
 });
 
 flowSelect.addEventListener('change', (e) => {
-    const selectedValue = e.target.value;
-    console.log(selectedValue);
+    currentSelectedFlow = e.target.value;
+    console.log(currentSelectedFlow);
 });
 
 darkModeButton?.addEventListener('click', () => {
@@ -40,8 +57,9 @@ darkModeButton?.addEventListener('click', () => {
         document.body.classList.remove('bg-dark', 'text-light');
     }
 });
-// Functions
 
+
+// Functions
 async function initiateLoad() {
     await sfConn.getSession(sfHost);
     let listOfFlowData = await getAllFlows();
@@ -51,7 +69,7 @@ async function initiateLoad() {
 }
 
 async function getAllFlows() {
-    let listOfFlow = await sfConn.rest("/services/data/v" + apiVersion + "/tooling/query/?q=" + encodeURIComponent("select id, DeveloperName  , ActiveVersion.MasterLabel,ActiveVersion.VersionNumber from FlowDefinition order by LastModifiedDate desc"));
+    let listOfFlow = await sfConn.rest("/services/data/v" + apiVersion + "/tooling/query/?q=" + encodeURIComponent(flowDefinitionQuery));
     return listOfFlow;
 }
 
@@ -71,8 +89,40 @@ function addFlowOptionItems(listOfFlowDefinitionData) {
     // Add options for each flow in the records
     records.forEach((record, index) => {
         const option = document.createElement('option');
-        option.value = record.DeveloperName;
+        option.value = record.ActiveVersionId;
         option.text = record.DeveloperName; // Assuming DeveloperName is the desired field for the option text
         selectElement.appendChild(option);
     });
+}
+
+async function getSelectedFlowMetadataDetails(flowId) {
+    let flowMetadataDetails = await sfConn.rest("/services/data/v" + apiVersion + "/tooling/query/?q=" + encodeURIComponent(flowMetadataDetailsQuery + `'${flowId}'`));
+
+    return flowMetadataDetails;
+}
+
+async function analyzeFlowMetadata(flowMetadata) {
+
+    const requestHeaders = new Headers();
+    requestHeaders.append("Content-Type", "application/json");
+
+    const requestOptions = {
+        method: 'POST',
+        headers: requestHeaders,
+        body: JSON.stringify(flowMetadata), // Assuming 'raw' holds your JSON data
+        redirect: 'follow'
+    };
+
+    try {
+        const response = await fetch(flowAnalyzerApiPath, requestOptions);
+        if (response.ok) {
+            const result = await response.json();
+            return result; // Return the result upon success
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
 }
