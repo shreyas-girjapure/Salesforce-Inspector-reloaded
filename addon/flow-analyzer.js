@@ -33,6 +33,7 @@ const darkModeButton = document.getElementById('darkModeToggle');
 const flowSelect = document.getElementById('flowSelect');
 const resultContainer = document.getElementById('result-container');
 const spinner = document.querySelector('#analyze .spinner-border');
+
 // Listeners 
 
 // DOM Connected callback
@@ -45,7 +46,7 @@ analyzeButton.addEventListener('click', async () => {
         alert('Please Select Flow For Analysis')
         return;
     }
-
+    resetResultContainerValues();
     toggleSpinner(spinner, true);
 
     try {
@@ -69,7 +70,7 @@ analyzeButton.addEventListener('click', async () => {
 
 flowSelect.addEventListener('change', (e) => {
     currentSelectedFlow = e.target.value;
-    resetValuesOnSelect();
+    resetResultContainerValues();
     console.log(currentSelectedFlow);    
 });
 
@@ -183,7 +184,7 @@ function displayFlowAnalyzedData(flowAnalysisResult) {
     resultContainer.appendChild(ul);
 }
 
-function resetValuesOnSelect() {
+function resetResultContainerValues() {
     resultContainer.innerHTML = '';
 }
 
