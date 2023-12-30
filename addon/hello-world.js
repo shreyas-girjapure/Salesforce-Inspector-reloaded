@@ -13,7 +13,7 @@ import { sfConn, apiVersion } from "./inspector.js";
 // Initializers and Constants
 let isDarkMode = false;
 const flowAnalyzerApiPath = "https://flow-incoming-edge-analyzer.onrender.com/analyze";
-const flowDefinitionQuery = "select id, DeveloperName  , ActiveVersionId from FlowDefinition order by LastModifiedDate desc";
+const flowDefinitionQuery = "select id, DeveloperName  , ActiveVersionId from FlowDefinition where ActiveVersion.ProcessType in ('Flow','AutoLaunchedFlow') order by LastModifiedDate desc";
 const flowMetadataDetailsQuery = "select id, FullName , Metadata from Flow where id = ";
 
 let currentSelectedFlow = '';
