@@ -1,3 +1,4 @@
+/* eslint-disable space-in-parens */
 /* eslint-disable keyword-spacing */
 /* eslint-disable semi */
 /* eslint-disable no-unused-vars */
@@ -39,13 +40,17 @@ analyzeButton.addEventListener('click', async () => {
 
     let flowMetadata = flowMetadataDetails?.records[0]?.Metadata;
     if (flowMetadata) {
-        let analysisResult = await analyzeFlowMetadata(flowMetadata);
+        let analysisResult = await sendFlowMetadataForAnalysis(flowMetadata);
+        if (analysisResult) {
+            displayFlowAnalyzedData(analysisResult);
+        }
         console.log(analysisResult);
     }
 });
 
 flowSelect.addEventListener('change', (e) => {
     currentSelectedFlow = e.target.value;
+    resetValuesOnSelect();
     console.log(currentSelectedFlow);
 });
 
@@ -101,7 +106,7 @@ async function getSelectedFlowMetadataDetails(flowId) {
     return flowMetadataDetails;
 }
 
-async function analyzeFlowMetadata(flowMetadata) {
+async function sendFlowMetadataForAnalysis(flowMetadata) {
 
     const requestHeaders = new Headers();
     requestHeaders.append("Content-Type", "application/json");
@@ -109,7 +114,7 @@ async function analyzeFlowMetadata(flowMetadata) {
     const requestOptions = {
         method: 'POST',
         headers: requestHeaders,
-        body: JSON.stringify(flowMetadata), // Assuming 'raw' holds your JSON data
+        body: JSON.stringify(flowMetadata),
         redirect: 'follow'
     };
 
@@ -117,12 +122,52 @@ async function analyzeFlowMetadata(flowMetadata) {
         const response = await fetch(flowAnalyzerApiPath, requestOptions);
         if (response.ok) {
             const result = await response.json();
-            return result; // Return the result upon success
+            return result;
         } else {
             throw new Error('Network response was not ok.');
         }
     } catch (error) {
         console.error('Error:', error);
         throw error;
+    }
+}
+
+function displayFlowAnalyzedData(flowAnalysisResult) {
+    const container = document.querySelector('.container-custom');
+    const dataDiv = document.createElement('div');
+    dataDiv.classList.add('mt-3');
+
+    const heading = document.createElement('h3');
+    heading.textContent = 'Elements Without Incoming Edge:';
+
+    const ul = document.createElement('ul');
+
+    if (flowAnalysisResult?.result?.length === 0) {
+        console.log("adasdsa")
+        const li = document.createElement('li');
+        li.textContent = "All Flow Elements Are Properly Mapped 🥳";
+        ul.appendChild(li);
+    }
+
+    flowAnalysisResult?.result.forEach(item => {
+        for (const key in item) {
+            if (Object.hasOwnProperty.call(item, key)) {
+                const li = document.createElement('li');
+                li.textContent = key;
+                ul.appendChild(li);
+            }
+        }
+    });
+
+    dataDiv.appendChild(heading);
+    dataDiv.appendChild(ul);
+
+    container.appendChild(dataDiv);
+}
+
+function resetValuesOnSelect() {
+    let resultDiv = document.querySelector('div.mt-3')
+    if (resultDiv) {
+        resultDiv.remove();
     }
 }
