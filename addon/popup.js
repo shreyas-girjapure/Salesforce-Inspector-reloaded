@@ -1070,6 +1070,7 @@ class AllDataBoxShortcut extends React.PureComponent {
     }
     try {
       setIsLoading(true);
+      shortcutSearch = shortcutSearch.trim();
 
       //search for shortcuts
       let result = setupLinks.filter(item => item.label.toLowerCase().includes(shortcutSearch.toLowerCase()));
@@ -1521,8 +1522,7 @@ class UserDetails extends React.PureComponent {
   enableDebugMode(user){
     sfConn.rest("/services/data/v" + apiVersion + "/sobjects/User/" + user.Id, {method: "PATCH",
       body: {UserPreferencesUserDebugModePref: !user.UserPreferencesUserDebugModePref
-      }}).then(
-      browser.runtime.sendMessage({message: "reloadPage"})
+      }}).then(() => browser.runtime.sendMessage({message: "reloadPage"})
     ).catch(err => console.log("Error during user debug mode activation", err));
   }
 

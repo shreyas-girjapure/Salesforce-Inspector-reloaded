@@ -2,6 +2,8 @@
 
 ## Version 1.26
 
+- Fix sandbox color banner missing in Flow debug [issue 738](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/738) by [Camille Guillory](https://github.com/CamilleGuillory)
+- Fix Upsert Custom Metadata Bug with Metadata Relationship [issue 509](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/509) (contribution by [Joshua Yarmak](https://github.com/toly11))
 - Guess file format on paste in data import [feature 501](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/501) request by [Adam Štěpánek](https://github.com/Damecek)
 - Add chrome extension shortcuts for Setup, Home Page and Dev Console [feature 707](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/707) request by [Danny Gelfenbaum](https://github.com/DannyGelf)
 - Add button on User tab to enable LWC debug mode from the popup [feature 696](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/696) request by [b-r-j](https://github.com/b-r-j)
@@ -24,10 +26,11 @@
 - Add new options to hide buttons in popup and data export [feature 618](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/618)
 - Added an option for Data Exporter to use local browser time [feature 527](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/527) (contribution by [David Moruzzi](https://github.com/dmoruzzi))
 - Add `calculated` to type column [feature 680](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/680) (contribution by [Lars Lipman](https://github.com/lrlip))
+- Fix LWC Debug mode force page refresh before User update [issue 718](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/718) (contribution by [Paul Kalinin](https://github.com/Paul-Kalynyn))
+- Fix `event-monitor` Error on Edge [issue 716](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/716) (contribution by [Paul Kalinin](https://github.com/Paul-Kalynyn))
 
 ## Version 1.25
 
-- Security improvements thanks to [Rikaard Hosein](https://github.com/rikaardhosein) [fix 661](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/661)
 - Add metadata title on shortcut search [feature 639](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/639) request by [Tal-Fr](https://github.com/Tal-Fr)
 - Fix `Use Favicon Color` option which was not working key [issue 634](https://github.com/tprouvot/Salesforce-Inspector-reloaded/issues/634) raised by [Gary Woodhouse](https://github.com/Garywoo)
 - Add `Clear` button in Event Monitor and REST Explorer
